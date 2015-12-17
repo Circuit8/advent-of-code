@@ -12,9 +12,19 @@ MFCSAM = {
 }
 
 puts DATA.select{ |line|
-	keys = line.scan(/([a-z]+):/).flatten
-	values = line.scan(/: (\d+)/).flatten.map(&:to_i)
-	MFCSAM.merge( keys.zip(values).to_h ) == MFCSAM
+	keys      = line.scan(/([a-z]+):/).flatten
+	values    = line.scan(/: (\d+)/).flatten.map(&:to_i)
+	line_hash = keys.zip(values).to_h
+	
+	line_hash.all? do |key, value|
+		if key == "cats" || key == "trees"		
+			MFCSAM[key] < value
+		elsif key == "pomeranians" || key == "goldfish"
+			MFCSAM[key] > value
+		else
+			MFCSAM[key] == value
+		end	
+	end
 }
 
 __END__
